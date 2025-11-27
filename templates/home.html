@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CoHealth - Homepage</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+</head>
+
+<body class="bg-gradient-to-r from-blue-100 to-white font-roboto">
+
+  <!-- Navbar -->
+  <nav class="bg-gradient-to-r from-blue-500 to-blue-300 p-4 shadow-lg rounded-lg mx-6 mt-6">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <a href="{{ url_for('home') }}" class="text-white text-2xl font-bold hover:text-blue-900 transition duration-300">CoHealth</a>
+      <div class="space-x-6">
+        <a href="{{ url_for('home') }}" class="text-white text-lg hover:text-blue-900 transition duration-300">Home</a>
+        <a href="{{ url_for('services') }}" class="text-white text-lg hover:text-blue-900 transition duration-300">Services</a>
+        <a href="{{ url_for('register') }}" class="text-white text-lg hover:text-blue-900 transition duration-300">Sign Up</a>
+        <a href="{{ url_for('login') }}" class="text-white text-lg hover:text-blue-900 transition duration-300">Login</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="flex items-center justify-center h-[75vh] bg-cover bg-center relative mx-6 rounded-xl shadow-lg"
+    style="background-image: url('https://picsum.photos/1500/900');">
+    <div class="absolute inset-0 bg-black/40 rounded-xl"></div>
+
+    <div class="relative z-10 text-center text-white p-10">
+      <h1 class="text-4xl font-bold mb-4 animate__animated animate__fadeIn">Welcome to CoHealth</h1>
+      <p class="text-xl mb-6 animate__animated animate__fadeIn animate__delay-1s">
+        An innovative system to manage your health easily and safely.
+      </p>
+      <a href="{{ url_for('services') }}" class="inline-block bg-gradient-to-r from-blue-500 to-blue-300 text-white py-4 px-10 rounded-full text-lg shadow-lg hover:bg-blue-400 transition duration-300">
+        Our Services
+      </a>
+    </div>
+  </section>
+
+</body>
+</html>

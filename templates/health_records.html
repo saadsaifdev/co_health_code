@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Records</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+
+    <div class="bg-blue-600 p-4 text-white flex justify-between">
+        <h1 class="text-xl font-bold">CoHealth</h1>
+        <a href="{{ url_for('services') }}" class="underline">Back to Services</a>
+    </div>
+
+    <div class="max-w-3xl mx-auto mt-10 p-6">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="bg-green-100 text-green-800 p-4 rounded mb-4">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <h1 class="text-4xl font-bold mb-4">Health Records</h1>
+        <p class="text-gray-600 mb-6">
+            Upload and manage your medical records safely and securely.
+        </p>
+
+        <form method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow-md">
+            
+            <label class="block font-semibold mb-2">Upload Medical File</label>
+            <input type="file" name="file"
+                   class="w-full border p-3 rounded mb-4" required>
+
+            <label class="block font-semibold mb-2">Notes</label>
+            <textarea name="notes" rows="4"
+                      class="w-full border p-3 rounded mb-4"
+                      placeholder="Add notes..."></textarea>
+
+            <button class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
+                Upload Record
+            </button>
+        </form>
+
+    </div>
+
+</body>
+</html>
