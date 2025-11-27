@@ -3,7 +3,7 @@ CoHealth – Web Application
 A fully functional interactive web application built using Flask, SQLite, and Jinja2 Templates.
 This project was developed as part of the Web Applications course requirements.
 
-✔ Features
+ Features
 
 User Registration (Sign Up):
 Allows new users to create an account and store their credentials securely in the database.
@@ -29,7 +29,7 @@ A simple page representing the user's health information.
 UI built with HTML + TailwindCSS:
 Clean, modern, and responsive user interface.
 
-✔ Technologies Used
+ Technologies Used
 
 Python (Flask Framework) – Backend logic, routing, server-side processing
 
