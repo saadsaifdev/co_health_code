@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CoHealth - Homepage</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CoHealth – الصفحة الرئيسية</title>
+
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 </head>
 
@@ -14,31 +15,96 @@
   <!-- Navbar -->
   <nav class="bg-gradient-to-r from-blue-500 to-blue-300 p-4 shadow-lg rounded-lg mx-6 mt-6">
     <div class="max-w-7xl mx-auto flex justify-between items-center">
-      <a href="{{ url_for('home') }}" class="text-white text-2xl font-bold hover:text-blue-900 transition duration-300">CoHealth</a>
+      <a href="{{ url_for('home') }}" class="text-white text-2xl font-bold hover:text-blue-900 transition duration-300">
+        CoHealth
+      </a>
       <div class="space-x-6">
-        <a href="{{ url_for('home') }}" class="text-white text-lg hover:text-blue-900 transition duration-300">Home</a>
-        <a href="{{ url_for('services') }}" class="text-white text-lg hover:text-blue-900 transition duration-300">Services</a>
-        <a href="{{ url_for('register') }}" class="text-white text-lg hover:text-blue-900 transition duration-300">Sign Up</a>
-        <a href="{{ url_for('login') }}" class="text-white text-lg hover:text-blue-900 transition duration-300">Login</a>
+        <a href="{{ url_for('home') }}" class="text-white text-lg hover:text-blue-900 transition duration-300">الرئيسية</a>
+        <a href="{{ url_for('services') }}" class="text-white text-lg hover:text-blue-900 transition duration-300">الخدمات</a>
+        <a href="{{ url_for('register') }}" class="text-white text-lg hover:text-blue-900 transition duration-300">تسجيل جديد</a>
+        <a href="{{ url_for('login') }}" class="text-white text-lg hover:text-blue-900 transition duration-300">تسجيل الدخول</a>
       </div>
     </div>
   </nav>
 
   <!-- Hero Section -->
-  <section class="flex items-center justify-center h-[75vh] bg-cover bg-center relative mx-6 rounded-xl shadow-lg"
-    style="background-image: url('https://picsum.photos/1500/900');">
-    <div class="absolute inset-0 bg-black/40 rounded-xl"></div>
-
-    <div class="relative z-10 text-center text-white p-10">
-      <h1 class="text-4xl font-bold mb-4 animate__animated animate__fadeIn">Welcome to CoHealth</h1>
-      <p class="text-xl mb-6 animate__animated animate__fadeIn animate__delay-1s">
-        An innovative system to manage your health easily and safely.
+  <section class="flex flex-col md:flex-row items-center justify-between max-w-6xl mx-auto mt-20 px-4 md:px-10">
+    
+    <!-- نص ترحيبي -->
+    <div class="w-full md:w-1/2 mb-10 md:mb-0 animate__animated animate__fadeInLeft">
+      <h1 class="text-5xl font-bold text-blue-800 mb-6">مرحبًا بك في CoHealth</h1>
+      <p class="text-gray-700 text-lg leading-relaxed mb-6">
+        هي خدمة صحية تفاعلية توفر فحص طبي سريع، دعم مباشر، وإدارة سجلاتك الصحية بسهولة وأمان
       </p>
-      <a href="{{ url_for('services') }}" class="inline-block bg-gradient-to-r from-blue-500 to-blue-300 text-white py-4 px-10 rounded-full text-lg shadow-lg hover:bg-blue-400 transition duration-300">
-        Our Services
-      </a>
+
+      <!-- الأزرار -->
+      <div class="flex flex-nowrap gap-4 justify-start">
+        <a href="{{ url_for('patients') }}"
+           class="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 transition">
+          سجلات المرضى
+        </a>
+
+        <a href="{{ url_for('checkup') }}"
+           class="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 transition">
+          بدء الفحص الطبي
+        </a>
+
+        <a href="{{ url_for('services') }}"
+           class="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 transition">
+          خدماتنا
+        </a>
+      </div>
+    </div>
+
+    <!-- صورة الطبيب -->
+    <div class="w-full md:w-1/2 flex justify-center animate__animated animate__fadeInRight">
+      <img src="{{ url_for('static', filename='images/doctor_images/abdul_salam.jpg') }}" 
+           alt="Doctor Illustration" 
+           class="w-80 h-auto rounded-xl shadow-lg">
+    </div>
+
+  </section>
+
+  <!-- Services Section -->
+  <section class="max-w-7xl mx-auto mt-24 px-4 md:px-10">
+    <h2 class="text-3xl font-bold text-center text-blue-700 mb-10">خدماتنا</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+      <div class="p-6 bg-white rounded-xl shadow hover:shadow-lg transition">
+        <h3 class="text-xl font-semibold text-blue-600 mb-3">الفحص الطبي عبر الإنترنت</h3>
+        <p class="text-gray-700">أدخل أعراضك وسيتم تقييمك مبدئيًا فورًا</p>
+      </div>
+      <div class="p-6 bg-white rounded-xl shadow hover:shadow-lg transition">
+        <h3 class="text-xl font-semibold text-blue-600 mb-3">دعم 24/7</h3>
+        <p class="text-gray-700">دعم متواصل لأي استفسار أو مساعدة في أي وقت</p>
+      </div>
+      <div class="p-6 bg-white rounded-xl shadow hover:shadow-lg transition">
+        <h3 class="text-xl font-semibold text-blue-600 mb-3">السجلات الطبية</h3>
+        <p class="text-gray-700">إدارة سجلاتك الطبية وتحميل ملفاتك بسهولة</p>
+      </div>
     </div>
   </section>
+
+  <!-- Why Choose Us -->
+  <section class="max-w-6xl mx-auto mt-24 px-4 md:px-10">
+    <h2 class="text-3xl font-bold text-blue-700 mb-6">لماذا تختار CoHealth؟</h2>
+    <p class="text-gray-700 text-lg leading-relaxed">
+      نهدف لتقديم تجربة صحية رقمية تجمع بين الأمان، السرعة، وسهولة الاستخدام  
+      وتتيح لك إدارة صحتك من منزلك
+    </p>
+  </section>
+
+  <!-- Contact -->
+  <section class="max-w-7xl mx-auto mt-24 px-4 md:px-10">
+    <h2 class="text-3xl font-bold text-blue-700 mb-6">تواصل معنا</h2>
+    <p class="text-gray-700 text-lg"><strong>البريد الإلكتروني:</strong> support@cohealth.com</p>
+    <p class="text-gray-700 text-lg"><strong>الهاتف:</strong> +964 770 123 4567</p>
+    <p class="text-gray-700 text-lg"><strong>العنوان:</strong> بغداد – العراق</p>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-blue-600 text-white text-center py-6 mt-20">
+    © 2025 CoHealth. جميع الحقوق محفوظة.
+  </footer>
 
 </body>
 </html>

@@ -1,52 +1,139 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Health Records</title>
+    <title>السجلات الصحية</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
+
 <body class="bg-gray-100">
 
+    <!-- شريط الأعلى -->
     <div class="bg-blue-600 p-4 text-white flex justify-between">
         <h1 class="text-xl font-bold">CoHealth</h1>
-        <a href="{{ url_for('services') }}" class="underline">Back to Services</a>
+        <a href="{{ url_for('services') }}" class="underline">العودة للخدمات</a>
     </div>
 
-    <div class="max-w-3xl mx-auto mt-10 p-6">
+    <div class="max-w-4xl mx-auto mt-10 mb-20 p-6">
 
+        <!-- رسائل التنبيه -->
         {% with messages = get_flashed_messages(with_categories=true) %}
           {% if messages %}
             {% for category, message in messages %}
-              <div class="bg-green-100 text-green-800 p-4 rounded mb-4">
+              <div class="bg-green-100 text-green-800 p-4 rounded mb-4 border-l-4 border-green-700">
                 {{ message }}
               </div>
             {% endfor %}
           {% endif %}
         {% endwith %}
 
-        <h1 class="text-4xl font-bold mb-4">Health Records</h1>
+        <!-- عنوان الصفحة -->
+        <h1 class="text-4xl font-bold mb-2">السجلات الصحية</h1>
+
         <p class="text-gray-600 mb-6">
-            Upload and manage your medical records safely and securely.
+            قم برفع، إدارة وعرض مستنداتك الطبية بأمان.
         </p>
 
-        <form method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow-md">
-            
-            <label class="block font-semibold mb-2">Upload Medical File</label>
+        <!-- معلومات المستخدم -->
+        <p class="text-sm text-gray-700 mb-6">
+            مسجل الدخول باسم:
+            <span class="font-semibold text-blue-700">{{ session['username'] }}</span>
+        </p>
+
+        <!-- ملاحظات مهمة -->
+        <div class="bg-yellow-100 text-yellow-800 p-4 rounded mb-8 border-l-4 border-yellow-600">
+            <p class="font-semibold">ملاحظات مهمة:</p>
+            <ul class="list-disc ml-6 text-sm mt-2">
+                <li>أنواع الملفات المدعومة: PDF، JPG، PNG.</li>
+                <li>أقصى حجم للملف: 5 ميجابايت.</li>
+                <li>سجلاتك مخزنة بأمان ولن يراها إلا أنت.</li>
+            </ul>
+        </div>
+
+        <!-- نموذج الرفع -->
+        <form method="POST" enctype="multipart/form-data"
+              class="bg-white p-6 rounded-lg shadow-md">
+
+            <h2 class="text-2xl font-bold mb-4">رفع سجل جديد</h2>
+
+            <label class="block font-semibold mb-2">رفع ملف طبي</label>
             <input type="file" name="file"
                    class="w-full border p-3 rounded mb-4" required>
 
-            <label class="block font-semibold mb-2">Notes</label>
+            <label class="block font-semibold mb-2">ملاحظات</label>
             <textarea name="notes" rows="4"
                       class="w-full border p-3 rounded mb-4"
-                      placeholder="Add notes..."></textarea>
+                      placeholder="أضف ملاحظات حول هذا السجل..."></textarea>
 
-            <button class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
-                Upload Record
+            <button
+                class="bg-blue-600 text-white px-8 py-3 rounded-lg text-lg shadow-md hover:bg-blue-700 transition">
+                رفع السجل
             </button>
         </form>
 
+        <!-- قسم الإحصاءات -->
+        <div class="grid grid-cols-3 gap-4 mt-10">
+            <div class="bg-white p-6 rounded shadow text-center">
+                <h3 class="text-xl font-bold text-blue-700">{{ records|length }}</h3>
+                <p class="text-gray-600">إجمالي السجلات</p>
+            </div>
+
+            <div class="bg-white p-6 rounded shadow text-center">
+                <h3 class="text-xl font-bold text-green-700">
+                    {% if records %}
+                        {{ records[-1].date }}
+                    {% else %}
+                        لا توجد تحميلات
+                    {% endif %}
+                </h3>
+                <p class="text-gray-600">آخر تحميل</p>
+            </div>
+
+            <div class="bg-white p-6 rounded shadow text-center">
+                <h3 class="text-xl font-bold text-purple-700">آمن</h3>
+                <p class="text-gray-600">تخزين مشفر</p>
+            </div>
+        </div>
+
+        <!-- قائمة السجلات -->
+        <h2 class="text-3xl font-bold mt-12 mb-4">السجلات التي قمت برفعها</h2>
+
+        <div class="bg-white p-6 rounded-lg shadow-md">
+
+            {% if records %}
+                <ul class="space-y-4">
+
+                    {% for r in records %}
+                    <li class="border p-4 rounded flex justify-between items-center">
+
+                        <div>
+                            <p class="font-semibold">الملف: {{ r.filename }}</p>
+                            <p class="text-gray-600 text-sm">ملاحظات: {{ r.notes }}</p>
+                            <p class="text-gray-500 text-xs">تاريخ الرفع: {{ r.date }}</p>
+                        </div>
+
+                        <div class="space-x-3">
+                            <a href="{{ url_for('download_record', record_id=r.id) }}" class="text-blue-600 underline">تحميل</a>
+                            <a href="{{ url_for('delete_record', record_id=r.id) }}" class="text-red-600 underline">حذف</a>
+                        </div>
+
+                    </li>
+                    {% endfor %}
+
+                </ul>
+
+            {% else %}
+                <p class="text-gray-600">لم تقم برفع أي سجلات حتى الآن.</p>
+            {% endif %}
+
+        </div>
+
     </div>
+
+    <footer class="text-center text-gray-600 py-6 mt-12">
+        © 2025 CoHealth – جميع الحقوق محفوظة.
+    </footer>
 
 </body>
 </html>

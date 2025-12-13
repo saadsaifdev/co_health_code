@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online Checkup - CoHealth</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <style>
+    @keyframes zoomInFade {
+      0% { transform: scale(.95); opacity: 0; }
+      60% { transform: scale(1.02); opacity: .95; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .anim-zoom-in { animation: zoomInFade .45s cubic-bezier(.2,.8,.2,1) both; }
+    .float-soft {
+      animation: floatY 3.6s ease-in-out infinite;
+    }
+    @keyframes floatY {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+      100% { transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-r from-blue-50 to-gray-100 min-h-screen flex flex-col">
+
+  <!-- Navbar -->
+  <header class="w-full bg-blue-600 text-white p-4 shadow-md">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <a href="{{ url_for('home') }}" class="flex items-center gap-3">
+        <div class="rounded-full bg-white text-blue-500 p-2 font-bold shadow">CoHealth</div>
+        <span class="font-semibold text-lg">Online Checkup</span>
+      </a>
+      <nav class="flex space-x-4">
+       <a href="{{ url_for('services') }}" class="underline">العودة للخدمات</a>
+        <a href="{{ url_for('home') }}" class="hover:underline">Home</a>
+        <a href="{{ url_for('services') }}" class="hover:underline">Services</a>
+        <a href="{{ url_for('logout') }}" class="hover:underline">Logout</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 w-full flex justify-center mt-10 px-4">
+    <div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+      <!-- LEFT: Checkup Form -->
+      <div class="space-y-6">
+        <div class="text-center mb-6">
+          <h1 class="text-3xl md:text-4xl font-extrabold text-slate-800 mb-2">متواجدون لمساعدتكم 24 ساعة</h1>
+          <p class="text-slate-600 text-lg">أدخل أعراضك أدناه وسنساعدك بأسرع وقت ممكن.</p>
+        </div>
+
+        <div class="anim-zoom-in bg-white rounded-2xl p-6 shadow-lg border border-slate-200">
+          <!-- Flash messages -->
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="mb-4 p-3 rounded-xl {{ 'bg-green-50 text-emerald-700 border border-emerald-100' if category=='success' else 'bg-red-50 text-red-700 border border-red-100' }}">
+                  <div class="flex items-start gap-3">
+                    <div class="mt-0.5">
+                      <i data-feather="{{ 'check-circle' if category=='success' else 'alert-circle' }}" class="w-5 h-5"></i>
+                    </div>
+                    <div class="text-sm">{{ message }}</div>
+                  </div>
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+
+          <!-- Form -->
+          <form action="{{ url_for('checkup') }}" method="POST" class="space-y-4" novalidate>
+            <label class="block text-slate-700 font-medium mb-1">اكتب الأعراض هنا</label>
+            <div class="flex items-start gap-2 bg-gray-100 p-3 rounded-2xl border border-gray-200">
+              <i data-feather="clipboard" class="w-6 h-6 text-blue-500 mt-1"></i>
+              <textarea name="symptoms" rows="5" required
+                class="w-full bg-gray-100 outline-none resize-none text-slate-700 placeholder-slate-400"
+                placeholder="صف أعراضك هنا بشكل واضح..."></textarea>
+            </div>
+            <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-2xl font-semibold shadow-md flex items-center justify-center gap-2">
+              <i data-feather="send" class="w-5 h-5"></i> إرسال
+            </button>
+          </form>
+
+          <!-- Chat Bubble Preview -->
+          <div class="mt-6 flex items-start gap-4">
+            <div class="w-12 h-12 rounded-2xl bg-blue-500 flex items-center justify-center text-white float-soft">
+              <i data-feather="message-circle" class="w-6 h-6"></i>
+            </div>
+            <div class="bg-blue-50 p-4 rounded-2xl shadow border border-blue-100 flex-1">
+              <div class="text-slate-800 font-medium">Support team</div>
+              <div class="text-slate-600 text-sm mt-1">
+                شكراً لك! تم استلام الأعراض الخاصة بك. سنقوم بالرد بأسرع وقت ممكن.
+              </div>
+            </div>
+          </div>
+
+          <!-- Confirmation Card -->
+          {% if success %}
+          <div class="mt-6 bg-green-50 border border-green-100 rounded-2xl p-4 shadow-md">
+            <h2 class="text-green-700 font-bold text-xl flex items-center gap-2">
+              <i data-feather="check-circle" class="w-6 h-6"></i> تم استلام الأعراض بنجاح!
+            </h2>
+            <p class="mt-2"><span class="font-semibold">أعراضك:</span> {{ message }}</p>
+            <p><span class="font-semibold">رقم التذكرة:</span> {{ ticket_id }}</p>
+            <p><span class="font-semibold">وقت الإرسال:</span> {{ timestamp }}</p>
+          </div>
+          {% endif %}
+
+          <!-- زر المساعدة -->
+          <div class="mt-4 text-center">
+            <a href="{{ url_for('support') }}" 
+               class="inline-block bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-2xl font-semibold shadow-md transition-all duration-300">
+              تحتاج مساعدة؟ تواصل معنا
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- RIGHT: Tips / Next Steps -->
+      <div class="space-y-6">
+        <div class="anim-zoom-in bg-white rounded-2xl p-6 shadow-lg border border-slate-200">
+          <h2 class="text-xl font-semibold text-slate-800 mb-4">خطوات بعد التشخيص</h2>
+          <ul class="space-y-4 text-slate-700 text-sm">
+            <li class="flex items-start gap-3">
+              <i data-feather="check-circle" class="text-blue-500 w-5 h-5 mt-1"></i>
+              <span>راجع تقرير الأعراض وانتظر الرد من فريق الدعم الطبي.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <i data-feather="check-circle" class="text-blue-500 w-5 h-5 mt-1"></i>
+              <span>حافظ على ملاحظاتك الصحية ودوّن أي أعراض جديدة.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <i data-feather="check-circle" class="text-blue-500 w-5 h-5 mt-1"></i>
+              <span>يمكنك حجز استشارة مباشرة عبر صفحة الخدمات إذا لزم الأمر.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <i data-feather="check-circle" class="text-blue-500 w-5 h-5 mt-1"></i>
+              <span>ابقَ متابعًا لأي تحديثات من فريقنا عبر البريد الإلكتروني أو الهاتف.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="mt-10 p-6 text-center text-slate-500 text-sm">
+    &copy; 2025 CoHealth · All rights reserved · <a href="{{ url_for('services') }}" class="underline">Services</a>
+  </footer>
+
+  <script>
+    feather.replace()
+  </script>
+</body>
+</html>

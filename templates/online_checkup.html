@@ -6,46 +6,103 @@
     <title>Online Checkup</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
+
 <body class="bg-gray-100">
 
-    <div class="bg-blue-600 p-4 text-white flex justify-between">
+    <!-- Navbar -->
+    <div class="bg-blue-600 p-4 text-white flex justify-between shadow-md">
         <h1 class="text-xl font-bold">CoHealth</h1>
-        <a href="{{ url_for('services') }}" class="underline">Back to Services</a>
+        <a href="{{ url_for('services') }}" class="underline hover:text-gray-200">Back to Services</a>
     </div>
 
-    <div class="max-w-3xl mx-auto mt-10 p-6">
-        
-        {% with messages = get_flashed_messages(with_categories=true) %}
-          {% if messages %}
-            {% for category, message in messages %}
-              <div class="bg-green-100 text-green-800 p-4 rounded mb-4">
-                {{ message }}
-              </div>
-            {% endfor %}
-          {% endif %}
-        {% endwith %}
+    <div class="max-w-6xl mx-auto mt-10 grid grid-cols-1 md:grid-cols-3 gap-8 p-4">
 
-        <h1 class="text-4xl font-bold mb-4">Online Checkup</h1>
-        <p class="text-gray-600 mb-6">
-            Get a quick online medical consultation by filling out the form below.
-        </p>
-
-        <form method="POST" class="bg-white p-6 rounded-lg shadow-md">
+        <!-- LEFT: Form Section -->
+        <div class="md:col-span-2">
             
-            <label class="block font-semibold mb-2">Describe your symptoms</label>
-            <textarea name="symptoms" rows="5"
-                      class="w-full border p-3 rounded mb-4"
-                      placeholder="Write your symptoms..." required></textarea>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="bg-green-100 text-green-800 p-4 rounded mb-4 shadow">
+                    {{ message }}
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
 
-            <label class="block font-semibold mb-2">Your age</label>
-            <input type="number" name="age"
-                   class="w-full border p-3 rounded mb-4"
-                   placeholder="Age" required>
+            <h1 class="text-4xl font-bold mb-3 text-blue-800">
+                Online Medical Checkup
+            </h1>
+            <p class="text-gray-600 mb-8">
+                Fill out the details below to receive a quick medical consultation from our system.
+            </p>
 
-            <button class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
-                Submit Request
-            </button>
-        </form>
+            <form method="POST" class="bg-white p-6 rounded-xl shadow-lg">
+
+                <!-- Name -->
+                <label class="block font-semibold mb-2">Full Name</label>
+                <input type="text" name="name"
+                       class="w-full border p-3 rounded mb-4"
+                       placeholder="Enter your name" required>
+
+                <!-- Gender -->
+                <label class="block font-semibold mb-2">Gender</label>
+                <select name="gender" class="w-full border p-3 rounded mb-4" required>
+                    <option value="">Select</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                </select>
+
+                <!-- Age -->
+                <label class="block font-semibold mb-2">Your Age</label>
+                <input type="number" name="age"
+                       class="w-full border p-3 rounded mb-4"
+                       placeholder="Enter your age" required>
+
+                <!-- Symptoms -->
+                <label class="block font-semibold mb-2">Describe your symptoms</label>
+                <textarea name="symptoms" rows="5"
+                          class="w-full border p-3 rounded mb-4"
+                          placeholder="Describe how you feel..." required></textarea>
+
+                <!-- Duration -->
+                <label class="block font-semibold mb-2">How long have you had these symptoms?</label>
+                <select name="duration" class="w-full border p-3 rounded mb-4" required>
+                    <option value="">Select</option>
+                    <option>1 day</option>
+                    <option>2–3 days</option>
+                    <option>1 week</option>
+                    <option>More than 1 week</option>
+                </select>
+
+                <!-- Pain level -->
+                <label class="block font-semibold mb-2">Pain Level (1–10)</label>
+                <input type="range" min="1" max="10" name="pain"
+                       class="w-full mb-4">
+
+                <!-- Chronic Diseases -->
+                <label class="block font-semibold mb-2">Do you have any chronic diseases?</label>
+                <textarea name="chronic" rows="2"
+                          class="w-full border p-3 rounded mb-4"
+                          placeholder="If none, type 'No'"></textarea>
+
+                <button class="w-full bg-blue-600 text-white py-3 rounded-lg text-lg font-semibold hover:bg-blue-700 transition">
+                    Submit Request
+                </button>
+            </form>
+        </div>
+
+        <!-- RIGHT: Info Section -->
+        <div class="bg-white p-6 rounded-xl shadow-lg h-fit">
+            <h2 class="text-2xl font-bold text-blue-700 mb-4">Important Notes</h2>
+            <ul class="text-gray-600 space-y-3">
+                <li>• This checkup gives a preliminary medical assessment.</li>
+                <li>• Your data is stored securely inside the system.</li>
+                <li>• A health recommendation will be provided based on your symptoms.</li>
+                <li>• In case of emergency symptoms, visit a real doctor immediately.</li>
+            </ul>
+        </div>
+
     </div>
 
 </body>

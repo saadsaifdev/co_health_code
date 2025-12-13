@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>CoHealth – المرضى</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+      window.searchPatients = function () {
+        const input = document.getElementById("searchInput").value
+          .toLowerCase()
+          .trim();
+
+        const rows = document.querySelectorAll(".patient-row");
+
+        rows.forEach(row => {
+          const name = row.querySelector(".patient-name").textContent.toLowerCase();
+          const phone = row.querySelector(".patient-phone").textContent.toLowerCase();
+
+          if (input === "") {
+            row.style.display = "";
+          } else if (name.includes(input) || phone.includes(input)) {
+            row.style.display = "";
+          } else {
+            row.style.display = "none";
+          }
+        });
+      };
+
+      window.clearSearch = function () {
+        document.getElementById("searchInput").value = "";
+        searchPatients();
+      };
+
+      window.handleEnter = function (e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          searchPatients();
+        }
+      };
+
+    });
+  </script>
+</head>
+
+<body dir="rtl" class="bg-gray-100">
+
+<!-- Navbar -->
+<nav class="bg-blue-600 p-4">
+  <div class="max-w-7xl mx-auto flex justify-between text-white">
+    <a href="{{ url_for('home') }}" class="text-2xl font-bold">CoHealth</a>
+    <div class="space-x-6">
+      <a href="{{ url_for('home') }}">الرئيسية</a>
+      <a href="{{ url_for('services') }}">الخدمات</a>
+      <a href="{{ url_for('patients') }}" class="font-semibold">المرضى</a>
+      <a href="{{ url_for('logout') }}">خروج</a>
+    </div>
+  </div>
+</nav>
+
+<div class="max-w-7xl mx-auto mt-8 px-4">
+
+  <!-- 🔍 البحث (فوك) -->
+  <div class="bg-white p-4 rounded shadow mb-6 flex gap-2">
+    <input
+      id="searchInput"
+      type="text"
+      onkeydown="handleEnter(event)"
+      placeholder="ابحث باسم المريض أو رقم الهاتف"
+      class="flex-1 border p-2 rounded">
+
+    <button onclick="searchPatients()"
+      class="bg-blue-600 text-white px-4 rounded">
+      بحث
+    </button>
+
+    <button onclick="clearSearch()"
+      class="bg-gray-500 text-white px-4 rounded">
+      مسح
+    </button>
+  </div>
+
+  <!-- إضافة مريض -->
+  <div class="bg-white p-6 rounded shadow mb-6">
+    <h2 class="text-xl font-bold text-blue-700 mb-4">إضافة مريض جديد</h2>
+
+    <form method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <input name="name" required placeholder="الاسم الكامل" class="border p-2 rounded">
+      <input name="age" type="number" required placeholder="العمر" class="border p-2 rounded">
+
+      <select name="gender" required class="border p-2 rounded">
+        <option value="">اختر الجنس</option>
+        <option value="Male">ذكر</option>
+        <option value="Female">أنثى</option>
+      </select>
+
+      <input name="phone" placeholder="رقم الهاتف" class="border p-2 rounded">
+      <textarea name="notes" placeholder="ملاحظات" class="border p-2 rounded md:col-span-2"></textarea>
+
+      <button class="bg-blue-600 text-white py-2 rounded md:col-span-2">
+        إضافة المريض
+      </button>
+    </form>
+  </div>
+
+  <!-- جدول المرضى -->
+  <div class="bg-white p-6 rounded shadow">
+    <h2 class="text-xl font-bold text-blue-700 mb-4">سجل المرضى</h2>
+
+    <table class="w-full border">
+      <thead class="bg-blue-50">
+        <tr>
+          <th class="p-2">الاسم</th>
+          <th class="p-2">العمر</th>
+          <th class="p-2">الجنس</th>
+          <th class="p-2">الهاتف</th>
+          <th class="p-2">الملاحظات</th>
+          <th class="p-2">التاريخ</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for patient in patients %}
+        <tr class="patient-row border-t">
+          <td class="p-2 patient-name">{{ patient.name }}</td>
+          <td class="p-2">{{ patient.age }}</td>
+          <td class="p-2">{{ 'ذكر' if patient.gender=='Male' else 'أنثى' }}</td>
+          <td class="p-2 patient-phone">{{ patient.phone }}</td>
+          <td class="p-2">{{ patient.notes }}</td>
+          <td class="p-2">{{ patient.created_at.strftime('%Y-%m-%d') }}</td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="6" class="text-center p-4 text-gray-500">
+            لا يوجد مرضى
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Services - CoHealth</title>
+    <title>خدماتنا - CoHealth</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
 </head>
 <body class="bg-gradient-to-r from-blue-50 to-gray-100">
 
-    <!-- Navbar -->
+    <!-- شريط التنقل -->
     <nav class="bg-blue-600 text-white p-4">
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-2xl font-semibold">CoHealth</h1>
@@ -21,36 +21,36 @@
         </div>
     </nav>
 
-    <!-- Page Title -->
+    <!-- عنوان الصفحة -->
     <div class="text-center mt-12">
-        <h2 class="text-4xl font-bold text-gray-800 mb-4">Our Services</h2>
-        <p class="text-gray-600 text-lg">Choose one of our health services below.</p>
+        <h2 class="text-4xl font-bold text-gray-800 mb-4">خدماتنا</h2>
+        <p class="text-gray-600 text-lg">اختر أحد خدماتنا الصحية أدناه / Choose one of our health services below.</p>
     </div>
 
-    <!-- Services Cards -->
+    <!-- بطاقات الخدمات -->
     <div class="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 mt-12 p-6">
 
         <!-- Online Checkup -->
         <a href="{{ url_for('checkup') }}">
             <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-1 transition cursor-pointer">
-                <h3 class="text-2xl font-bold text-gray-800 mb-3">Online Checkup</h3>
-                <p class="text-gray-600">Quick and easy online medical consultations.</p>
+                <h3 class="text-2xl font-bold text-gray-800 mb-3">الفحص الطبي أونلاين / Online Checkup</h3>
+                <p class="text-gray-600">استشارات طبية سريعة وسهلة عبر الإنترنت / Quick and easy online medical consultations.</p>
             </div>
         </a>
 
         <!-- Health Records -->
         <a href="{{ url_for('health_records') }}">
             <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-1 transition cursor-pointer">
-                <h3 class="text-2xl font-bold text-gray-800 mb-3">Health Records</h3>
-                <p class="text-gray-600">Securely store and manage your health data.</p>
+                <h3 class="text-2xl font-bold text-gray-800 mb-3">السجلات الصحية / Health Records</h3>
+                <p class="text-gray-600">خزن بياناتك الصحية بأمان وادارتها / Securely store and manage your health data.</p>
             </div>
         </a>
 
         <!-- 24/7 Support -->
-        <a href="{{ url_for('support_247') }}">
+        <a href="{{ url_for('support') }}">
             <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-1 transition cursor-pointer">
-                <h3 class="text-2xl font-bold text-gray-800 mb-3">24/7 Support</h3>
-                <p class="text-gray-600">Our team is available anytime you need help.</p>
+                <h3 class="text-2xl font-bold text-gray-800 mb-3">الدعم 24/7 / 24/7 Support</h3>
+                <p class="text-gray-600">فريقنا متواجد دائماً لمساعدتك / Our team is available anytime you need help.</p>
             </div>
         </a>
 

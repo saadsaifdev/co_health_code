@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>24/7 Support — CoHealth</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Feather icons -->
+  <script src="https://unpkg.com/feather-icons"></script>
+
+  <style>
+    /* Animations */
+    @keyframes zoomInFade {0%{transform:scale(.96);opacity:0}60%{transform:scale(1.02);opacity:.95}100%{transform:scale(1);opacity:1}}
+    .anim-zoom-in { animation: zoomInFade .45s cubic-bezier(.2,.8,.2,1) both; }
+
+    @keyframes floatY {0%{transform:translateY(0)}50%{transform:translateY(-6px)}100%{transform:translateY(0)}}
+    .float-soft { animation: floatY 3.6s ease-in-out infinite; }
+
+    .glass { background: rgba(255,255,255,0.85); backdrop-filter: blur(6px); }
+
+    /* Chat bubbles */
+    .bubble-user { background: #3b82f6; color:white; border-radius:1rem 1rem 0 1rem; padding:0.75rem 1rem; max-width:80%; align-self:flex-end; }
+    .bubble-support { background: #e0f2fe; color:#0c4a6e; border-radius:1rem 1rem 1rem 0; padding:0.75rem 1rem; max-width:80%; align-self:flex-start; }
+
+    /* Success alert */
+    .alert-success { background: #dcfce7; color: #166534; border:1px solid #bbf7d0; border-radius:1rem; padding:0.5rem 1rem; margin-bottom:0.5rem; }
+  </style>
+</head>
+<body class="bg-gradient-to-b from-blue-50 to-white min-h-screen flex flex-col font-sans">
+
+  <!-- HEADER -->
+  <header class="w-full sticky top-0 z-40 shadow bg-white/90 backdrop-blur-sm">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="{{ url_for('home') }}" class="flex items-center gap-3">
+        <div class="rounded-xl bg-blue-500 p-2 shadow-lg flex items-center justify-center">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden>
+            <path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10z" fill="white"/>
+            <path d="M7 9h10M7 13h6" stroke="#3b82f6" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="text-lg font-extrabold text-slate-700">CoHealth</div>
+          <div class="text-xs text-slate-500">Care • Consult • Connect</div>
+        </div>
+      </a>
+      <nav class="flex items-center gap-4 text-slate-600">
+        <a href="{{ url_for('services') }}" class="underline">العودة للخدمات</a>
+        <a href="{{ url_for('home') }}" class="hover:underline">Home</a>
+        <a href="{{ url_for('services') }}" class="hover:underline">Services</a>
+        <a href="{{ url_for('support') }}" class="font-semibold text-blue-600">Support</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-1 w-full py-10 px-4 flex flex-col items-center space-y-10">
+
+    <!-- PAGE TITLE -->
+    <section class="text-center max-w-3xl space-y-2">
+      <h1 class="text-3xl md:text-4xl font-extrabold text-slate-800">24/7 Support</h1>
+      <p class="text-slate-600 text-lg md:text-base">متواجدون على مدار الساعة — 24/7. أرسل رسالتك وراح نرد بأسرع وقت.</p>
+    </section>
+
+    <!-- SUPPORT FORM -->
+    <section class="w-full max-w-3xl glass rounded-2xl p-6 shadow-xl border border-slate-100 anim-zoom-in flex flex-col space-y-4">
+
+      <form id="supportForm" class="space-y-4">
+        <label class="block text-slate-700 font-medium">اكتب رسالتك هنا</label>
+        <textarea name="message" rows="5" required
+          class="w-full p-4 rounded-2xl border border-slate-200 bg-white/90 shadow-sm focus:ring-2 focus:ring-blue-200 focus:border-blue-300 outline-none text-slate-700 transition"
+          placeholder="اكتب رسالتك..."></textarea>
+
+        <button type="submit"
+          class="w-full inline-flex justify-center items-center gap-2 px-4 py-2 rounded-2xl bg-blue-500 hover:bg-blue-600 text-white font-semibold shadow-md transition">
+          إرسال
+        </button>
+      </form>
+
+      <div id="successAlert" class="alert-success hidden">تم إرسال رسالتك بنجاح!</div>
+
+      <!-- CHAT PREVIEW -->
+      <div id="chatPreview" class="flex flex-col space-y-3 max-h-80 overflow-y-auto border border-slate-100 p-3 rounded-2xl bg-white shadow-sm">
+        <div class="bubble-support animate-pulse">
+          مرحباً! رسائل الدعم ستظهر هنا بعد إرسالها مباشرة.
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACTS -->
+    <section class="w-full max-w-3xl space-y-4">
+      <div class="glass rounded-2xl p-5 shadow-lg border border-slate-100 anim-zoom-in">
+        <h3 class="text-lg font-semibold text-slate-800 mb-3">Quick Support Contacts</h3>
+        <ul class="space-y-3 text-slate-700 text-sm">
+          <li class="flex items-center gap-3">
+            <i data-feather="phone" class="text-blue-500 w-5 h-5"></i>
+            +964 770 111 2222
+          </li>
+          <li class="flex items-center gap-3">
+            <i data-feather="phone" class="text-blue-500 w-5 h-5"></i>
+            +964 771 333 4444
+          </li>
+          <li class="flex items-center gap-3">
+            <i data-feather="mail" class="text-blue-500 w-5 h-5"></i>
+            support@cohealth.com
+          </li>
+          <li class="flex items-center gap-3">
+            <i data-feather="map-pin" class="text-blue-500 w-5 h-5"></i>
+            بغداد، العراق
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- MAP -->
+    <section class="w-full max-w-3xl rounded-2xl overflow-hidden border border-slate-100 shadow-lg">
+      <iframe
+        class="w-full h-64"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3383.314586063299!2d44.3614882!3d33.3128057!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1557815aa1e0dbc7%3A0xe83da6e97913e0c2!2zQmFnaGRhZCwgQmFnaGRhZCwg2KfZhNmF2YrYqSDYp9mE2K1ZhNmE2YXYuQ!5e0!3m2!1sar!2siq!4v1702123456789">
+      </iframe>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="mt-10 p-6 text-center text-gray-600 text-sm">
+    &copy; 2025 CoHealth. All rights reserved. | 
+    <a href="{{ url_for('services') }}" class="hover:underline">Services</a> | 
+    <a href="{{ url_for('support') }}" class="hover:underline">Support</a>
+  </footer>
+
+  <script>
+    feather.replace();
+
+    const form = document.getElementById('supportForm');
+    const chat = document.getElementById('chatPreview');
+    const alertBox = document.getElementById('successAlert');
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      const textarea = this.message;
+      if(!textarea.value.trim()) return;
+
+      const now = new Date();
+      const time = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+
+      const userMsg = document.createElement('div');
+      userMsg.className = 'bubble-user anim-zoom-in';
+      userMsg.innerHTML = `<div>${textarea.value}</div><div class="text-xs text-white/80 self-end mt-1">${time}</div>`;
+      chat.appendChild(userMsg);
+
+      // Scroll to bottom
+      chat.scrollTop = chat.scrollHeight;
+
+      // Show success alert
+      alertBox.classList.remove('hidden');
+      setTimeout(()=> alertBox.classList.add('hidden'),3000);
+
+      textarea.value = '';
+    });
+  </script>
+</body>
+</html>
